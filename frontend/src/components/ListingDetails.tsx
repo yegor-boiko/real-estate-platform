@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import type { Listing } from "../types/listing";
 
-interface Props {
-  id: number;
-}
 
-export default function ListingDetails({ id }: Props) {
+export default function ListingDetails() {
+  const { id } = useParams();
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,6 +90,7 @@ export default function ListingDetails({ id }: Props) {
         <dt>Apartment identifier</dt>
         <dd>{listing.source_unit_identifier ?? "Not specified"}</dd>
       </dl>
+      <Link to="/">Back to listings</Link>
     </main>
   );
 }

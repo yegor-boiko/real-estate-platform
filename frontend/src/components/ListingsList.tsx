@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Listing, ListingsResponse } from "../types/listing";
 import ListingFiltersForm from "./ListingFiltersForm";
 import type { SearchFilters } from "./ListingFiltersForm";
@@ -99,6 +100,7 @@ export default function ListingsList() {
               <p>
                 Price: {Number(listing.price_total).toLocaleString("pl-PL")} zł
               </p>
+              <Link to={`/listings/${listing.id}`}>View details</Link>
             </article>
           ))}
 
