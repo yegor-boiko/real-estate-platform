@@ -1,0 +1,16 @@
+{
+  "name": "real-estate-platform-docplanner",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "backend"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  }
+}
