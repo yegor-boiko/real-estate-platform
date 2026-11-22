@@ -1,5 +1,6 @@
 import pool from "../db/connection.js";
 import type { Listing } from "../types/listing.js";
+import type { RowDataPacket } from "mysql2";
 
 // Replaces the dataset atomically: failed imports roll back to the previous data.
 export async function saveListings(listings: Listing[]): Promise<void> {
@@ -69,3 +70,25 @@ export async function saveListings(listings: Listing[]): Promise<void> {
     connection.release();
   }
 }
+
+// Fetches one page of listings and the total count for pagination.
+export async function getListings(
+    page: number = 1,
+    limit: number = 10
+): Promise<{ listings: RowDataPacket[], totalRows: number}> {
+    const offset = (page - 1) * limit;
+
+    const [listings] = await pool.query<RowDataPacket[]>(
+        "SELECT * FROM `listings` ORDER BY id LIMIT ? OFFSET ?",
+        [limit, offset]
+    );
+
+    const [countRows] = await pool.query<RowDataPacket[]>(
+        "SELECT COUNT(*) as totalRows FROM `listings`"
+    );
+
+    return {
+        listings,
+        totalRows: Number(countRows[0]?.totalRows ?? 0),
+    };
+};
