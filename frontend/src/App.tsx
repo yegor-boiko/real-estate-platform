@@ -1,5 +1,5 @@
-import ListingsList from "./components/ListingsList";
+import ListingDetails from "./components/ListingDetails";
 
 export default function App() {
-  return <ListingsList />;
+  return <ListingDetails id={11111} />;
 }
