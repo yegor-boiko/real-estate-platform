@@ -1,5 +1,6 @@
 import pool from "../db/connection.js";
 import type { Listing } from "../types/listing.js";
+import type { ListingFilters } from "../schemas/listingSearchSchema.js";
 import type { RowDataPacket } from "mysql2";
 
 // Replaces the dataset atomically: failed imports roll back to the previous data.
@@ -71,24 +72,66 @@ export async function saveListings(listings: Listing[]): Promise<void> {
   }
 }
 
-// Fetches one page of listings and the total count for pagination.
+// Build a paginated listing query using optional, validated filters.
+// SQL values are parameterized; only predefined column expressions are used.
 export async function getListings(
     page: number = 1,
-    limit: number = 10
-): Promise<{ listings: RowDataPacket[], totalRows: number}> {
-    const offset = (page - 1) * limit;
+    limit: number = 10,
+    filters: ListingFilters = {},
+): Promise<{ listings: RowDataPacket[], totalFilteredRows: number, totalRows: number }> {
+  const conditions: string[] = [];
+  const params: (string | number)[] = [];
 
-    const [listings] = await pool.query<RowDataPacket[]>(
-        "SELECT * FROM `listings` ORDER BY id LIMIT ? OFFSET ?",
-        [limit, offset]
-    );
+  if (filters.city) {
+    conditions.push("city LIKE ?");
+    params.push(`%${filters.city}%`);
+  }
 
-    const [countRows] = await pool.query<RowDataPacket[]>(
-        "SELECT COUNT(*) as totalRows FROM `listings`"
-    );
+  if (filters.minPrice !== undefined) {
+    conditions.push("price_total >= ?");
+    params.push(filters.minPrice);
+  }
 
-    return {
-        listings,
-        totalRows: Number(countRows[0]?.totalRows ?? 0),
-    };
-};
+  if (filters.maxPrice !== undefined) {
+    conditions.push("price_total <= ?");
+    params.push(filters.maxPrice);
+  }
+
+  if (filters.minArea !== undefined) {
+    conditions.push("area_m2 >= ?");
+    params.push(filters.minArea);
+  }
+
+  if (filters.maxArea !== undefined) {
+    conditions.push("area_m2 <= ?");
+    params.push(filters.maxArea);
+  }
+
+  // Reuse the same conditions for both listing retrieval and filtered counts.
+  const whereClause =
+    conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+  const offset = (page - 1) * limit;
+
+  // Parameterized values prevent SQL injection through search filters.
+  const [listings] = await pool.query<RowDataPacket[]>(
+    `SELECT * FROM listings ${whereClause} ORDER BY id ASC LIMIT ? OFFSET ?`,
+    [...params, limit, offset],
+  );
+
+  // Count matching records separately from the total dataset size.
+  const [filteredCount] = await pool.query<RowDataPacket[]>(
+    `SELECT COUNT(*) AS total FROM listings ${whereClause}`,
+    params,
+  );
+
+  const [allCount] = await pool.query<RowDataPacket[]>(
+    "SELECT COUNT(*) AS total FROM listings",
+  );
+
+  return {
+    listings,
+    totalFilteredRows: Number(filteredCount[0]?.total ?? 0),
+    totalRows: Number(allCount[0]?.total ?? 0),
+  };
+}
