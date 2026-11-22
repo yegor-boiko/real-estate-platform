@@ -1,5 +1,8 @@
 import express from "express";
-import { getListings } from "./repositories/listingRepository.js";
+import {
+  getListings,
+  getListingById,
+} from "./repositories/listingRepository.js";
 import { listingSearchSchema } from "./schemas/listingSearchSchema.js";
 
 const app = express();
@@ -38,6 +41,31 @@ app.get("/api/listings", async (req, res) => {
   } catch (error) {
     console.error("Failed to fetch listings:", error);
     res.status(500).json({ error: "Failed to fetch listings" });
+  }
+});
+
+
+app.get("/api/listings/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  // Validate the URL parameter before passing it to MySQL.
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    res.status(400).json({ error: "Invalid listing ID" });
+    return;
+  }
+
+  try {
+    const listing = await getListingById(id);
+
+    if (!listing) {
+      res.status(404).json({ error: "Listing not found" });
+      return;
+    }
+
+    res.json({ data: listing });
+  } catch (error) {
+    console.error("Failed to fetch listing:", error);
+    res.status(500).json({ error: "Failed to fetch listing" });
   }
 });
 

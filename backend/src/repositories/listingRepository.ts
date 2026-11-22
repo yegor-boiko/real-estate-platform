@@ -135,3 +135,15 @@ export async function getListings(
     totalRows: Number(allCount[0]?.total ?? 0),
   };
 }
+
+// Fetch a single listing by its database-generated ID.
+export async function getListingById(
+  id: number,
+): Promise<RowDataPacket | null> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    "SELECT * FROM listings WHERE id = ?",
+    [id],
+  );
+
+  return rows[0] ?? null;
+}
