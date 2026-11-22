@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 export interface SearchFilters {
@@ -10,20 +9,23 @@ export interface SearchFilters {
 }
 
 interface Props {
+  initialFilters: SearchFilters;
   onSearch: (filters: SearchFilters) => void;
   onReset: () => void;
 }
 
-const emptyFilters: SearchFilters = {
-  city: "",
-  minPrice: "",
-  maxPrice: "",
-  minArea: "",
-  maxArea: "",
-};
+interface Props {
+  initialFilters: SearchFilters;
+  onSearch: (filters: SearchFilters) => void;
+  onReset: () => void;
+}
 
-export default function ListingFiltersForm({ onSearch, onReset }: Props) {
-  const [filters, setFilters] = useState<SearchFilters>(emptyFilters);
+export default function ListingFiltersForm({
+  initialFilters,
+  onSearch,
+  onReset,
+}: Props) {
+  const [filters, setFilters] = useState<SearchFilters>(initialFilters);
 
   function updateFilter(field: keyof SearchFilters, value: string) {
     setFilters((previous) => ({ ...previous, [field]: value }));
@@ -35,9 +37,16 @@ export default function ListingFiltersForm({ onSearch, onReset }: Props) {
   }
 
   function handleReset() {
-    setFilters(emptyFilters);
+    setFilters({
+        city: "",
+        minPrice: "",
+        maxPrice: "",
+        minArea: "",
+        maxArea: "",
+    });
+
     onReset();
-  }
+    }
 
   return (
     <form onSubmit={handleSubmit}>

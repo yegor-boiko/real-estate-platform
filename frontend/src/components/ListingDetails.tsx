@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import type { Listing } from "../types/listing";
 
 
@@ -8,6 +8,13 @@ export default function ListingDetails() {
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  const location = useLocation();
+  const from =
+    typeof location.state?.from === "string" &&
+    location.state.from.startsWith("?")
+      ? location.state.from
+      : "";
 
   useEffect(() => {
     async function loadListing() {
@@ -90,7 +97,7 @@ export default function ListingDetails() {
         <dt>Apartment identifier</dt>
         <dd>{listing.source_unit_identifier ?? "Not specified"}</dd>
       </dl>
-      <Link to="/">Back to listings</Link>
+      <Link to={`/${from}`}>Back to listings</Link>
     </main>
   );
 }

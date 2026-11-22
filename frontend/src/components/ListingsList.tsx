@@ -1,24 +1,30 @@
-
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import type { Listing, ListingsResponse } from "../types/listing";
 import ListingFiltersForm from "./ListingFiltersForm";
 import type { SearchFilters } from "./ListingFiltersForm";
 
 export default function ListingsList() {
   const [listings, setListings] = useState<Listing[]>([]);
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
-    city: "",
-    minPrice: "",
-    maxPrice: "",
-    minArea: "",
-    maxArea: "",
-  });
+  
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryString = searchParams.toString();
+
+  const pageParam = Number(searchParams.get("page") ?? 1);
+  const page = Number.isSafeInteger(pageParam) && pageParam > 0 ? pageParam : 1;
+
+  const searchFilters: SearchFilters = {
+    city: searchParams.get("city") ?? "",
+    minPrice: searchParams.get("minPrice") ?? "",
+    maxPrice: searchParams.get("maxPrice") ?? "",
+    minArea: searchParams.get("minArea") ?? "",
+    maxArea: searchParams.get("maxArea") ?? "",
+  };
+
 
   useEffect(() => {
     async function loadListings() {
@@ -26,14 +32,30 @@ export default function ListingsList() {
       setError(null);
 
       try {
+        const urlParams = new URLSearchParams(queryString);
+
+        const currentPageParam = Number(urlParams.get("page") ?? 1);
+        const currentPage =
+          Number.isSafeInteger(currentPageParam) && currentPageParam > 0
+            ? currentPageParam
+            : 1;
+
         const params = new URLSearchParams({
-          page: String(page),
+          page: String(currentPage),
           limit: "6",
         });
 
-        for (const [key, value] of Object.entries(searchFilters)) {
-          if (value.trim()) {
-            params.set(key, value.trim());
+        for (const key of [
+          "city",
+          "minPrice",
+          "maxPrice",
+          "minArea",
+          "maxArea",
+        ]) {
+          const value = urlParams.get(key)?.trim();
+
+          if (value) {
+            params.set(key, value);
           }
         }
 
@@ -57,22 +79,29 @@ export default function ListingsList() {
     }
 
     void loadListings();
-  }, [page, searchFilters]);
+  }, [queryString]);
 
   function handleSearch(filters: SearchFilters) {
-    setPage(1);
-    setSearchFilters(filters);
+    const params = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (value.trim()) {
+        params.set(key, value.trim());
+      }
+    }
+
+    params.set("page", "1");
+    setSearchParams(params);
   }
 
   function handleReset() {
-    setPage(1);
-    setSearchFilters({
-      city: "",
-      minPrice: "",
-      maxPrice: "",
-      minArea: "",
-      maxArea: "",
-    });
+    setSearchParams(new URLSearchParams());
+  }
+
+  function changePage(newPage: number) {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(newPage));
+    setSearchParams(params);
   }
 
   return (
@@ -80,6 +109,8 @@ export default function ListingsList() {
       <h1>Available apartments</h1>
 
       <ListingFiltersForm
+        key={queryString}
+        initialFilters={searchFilters}
         onSearch={handleSearch}
         onReset={handleReset}
       />
@@ -100,7 +131,12 @@ export default function ListingsList() {
               <p>
                 Price: {Number(listing.price_total).toLocaleString("pl-PL")} zł
               </p>
-              <Link to={`/listings/${listing.id}`}>View details</Link>
+              <Link
+                to={`/listings/${listing.id}`}
+                state={{ from: `?${queryString}` }}
+              >
+                View details
+              </Link>
             </article>
           ))}
 
@@ -109,7 +145,7 @@ export default function ListingsList() {
               <button
                 type="button"
                 disabled={page <= 1}
-                onClick={() => setPage(page - 1)}
+                onClick={() => changePage(page - 1)}
               >
                 Previous
               </button>
@@ -122,7 +158,7 @@ export default function ListingsList() {
               <button
                 type="button"
                 disabled={page >= totalPages}
-                onClick={() => setPage(page + 1)}
+                onClick={() => changePage(page + 1)}
               >
                 Next
               </button>
