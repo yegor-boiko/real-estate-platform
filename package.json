@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "workspaces": [
-    "backend"
-  ],
+  "workspaces": ["backend", "frontend"],
   "keywords": [],
   "author": "",
   "license": "ISC",
