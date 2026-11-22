@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from "react";
 import type { Listing, ListingsResponse } from "../types/listing";
+import ListingFiltersForm from "./ListingFiltersForm";
+import type { SearchFilters } from "./ListingFiltersForm";
 
 export default function ListingsList() {
   const [listings, setListings] = useState<Listing[]>([]);
@@ -9,13 +11,32 @@ export default function ListingsList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>({
+    city: "",
+    minPrice: "",
+    maxPrice: "",
+    minArea: "",
+    maxArea: "",
+  });
+
   useEffect(() => {
     async function loadListings() {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await fetch(`/api/listings?page=${page}&limit=6`);
+        const params = new URLSearchParams({
+          page: String(page),
+          limit: "6",
+        });
+
+        for (const [key, value] of Object.entries(searchFilters)) {
+          if (value.trim()) {
+            params.set(key, value.trim());
+          }
+        }
+
+        const response = await fetch(`/api/listings?${params.toString()}`);
 
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -35,11 +56,32 @@ export default function ListingsList() {
     }
 
     void loadListings();
-  }, [page]);
+  }, [page, searchFilters]);
+
+  function handleSearch(filters: SearchFilters) {
+    setPage(1);
+    setSearchFilters(filters);
+  }
+
+  function handleReset() {
+    setPage(1);
+    setSearchFilters({
+      city: "",
+      minPrice: "",
+      maxPrice: "",
+      minArea: "",
+      maxArea: "",
+    });
+  }
 
   return (
     <main>
       <h1>Available apartments</h1>
+
+      <ListingFiltersForm
+        onSearch={handleSearch}
+        onReset={handleReset}
+      />
 
       {loading ? (
         <p>Loading apartments...</p>
