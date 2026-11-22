@@ -111,11 +111,19 @@ export async function getListings(
   const whereClause =
     conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
+  // Whitelist SQL sorting expressions instead of interpolating user input.
+  const orderBy =
+    filters.sortBy === "price_asc"
+      ? "price_total ASC, id ASC"
+      : filters.sortBy === "price_desc"
+        ? "price_total DESC, id ASC"
+        : "id ASC";
+
   const offset = (page - 1) * limit;
 
   // Parameterized values prevent SQL injection through search filters.
   const [listings] = await pool.query<RowDataPacket[]>(
-    `SELECT * FROM listings ${whereClause} ORDER BY id ASC LIMIT ? OFFSET ?`,
+    `SELECT * FROM listings ${whereClause} ORDER BY ${orderBy} LIMIT ? OFFSET ?`,
     [...params, limit, offset],
   );
 

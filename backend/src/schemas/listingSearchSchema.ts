@@ -21,6 +21,8 @@ export const listingSearchSchema = z
     maxPrice: positiveNumber.optional(),
     minArea: positiveNumber.optional(),
     maxArea: positiveNumber.optional(),
+
+    sortBy: z.enum(["default", "price_asc", "price_desc"]).optional(),
   })
   .refine(
     (data) =>
