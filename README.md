@@ -61,12 +61,6 @@ The `SOURCE` command executes the SQL schema file and creates the listings table
 
 Run the MySQL client from the project root so that the relative path `database/schema.sql` resolves correctly.
 
-On Windows, if MySQL cannot locate the file, use its absolute path with forward slashes:
-
-```sql
-SOURCE D:/Docplanner/real-estate-platform-docplanner/database/schema.sql;
-```
-
 ### 4. Configure environment variables
 
 Copy the example configuration:
