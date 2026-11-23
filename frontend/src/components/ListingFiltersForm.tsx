@@ -15,6 +15,7 @@ interface Props {
   onReset: () => void;
 }
 
+// Keeps form inputs as strings until submitted; the backend validates numeric filters.
 export default function ListingFiltersForm({
   initialFilters,
   onSearch,
@@ -46,16 +47,19 @@ export default function ListingFiltersForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Filters</h2>
-
-      <label>
-        City
+      <div className="mb-3">
+        <label className="form-label" htmlFor="city">
+          City
+        </label>
         <input
+          id="city"
+          className="form-control form-control-sm"
           type="text"
+          placeholder="e.g. Kraków"
           value={filters.city}
           onChange={(event) => updateFilter("city", event.target.value)}
         />
-      </label>
+      </div>
 
       {(
         [
@@ -65,21 +69,29 @@ export default function ListingFiltersForm({
           ["maxArea", "Maximum area (m²)"],
         ] as const
       ).map(([field, label]) => (
-        <label key={field}>
-          {label}
+        <div className="mb-3" key={field}>
+          <label className="form-label" htmlFor={field}>
+            {label}
+          </label>
           <input
+            id={field}
+            className="form-control form-control-sm"
             type="number"
             min="0"
             step="any"
             value={filters[field]}
             onChange={(event) => updateFilter(field, event.target.value)}
           />
-        </label>
+        </div>
       ))}
 
-      <label>
-        Sort by
+      <div className="mb-4">
+        <label className="form-label" htmlFor="sortBy">
+          Sort by
+        </label>
         <select
+          id="sortBy"
+          className="form-select form-select-sm"
           value={filters.sortBy}
           onChange={(event) => updateFilter("sortBy", event.target.value)}
         >
@@ -87,12 +99,20 @@ export default function ListingFiltersForm({
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
         </select>
-      </label>
+      </div>
 
-      <button type="submit">Search</button>
-      <button type="button" onClick={handleReset}>
-        Reset
-      </button>
+      <div className="d-grid gap-2">
+        <button className="btn btn-primary" type="submit">
+          Search
+        </button>
+        <button
+          className="btn btn-outline-secondary"
+          type="button"
+          onClick={handleReset}
+        >
+          Reset
+        </button>
+      </div>
     </form>
   );
 }

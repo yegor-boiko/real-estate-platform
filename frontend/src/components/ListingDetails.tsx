@@ -10,16 +10,18 @@ export default function ListingDetails() {
   const [error, setError] = useState<string | null>(null);
   
   const location = useLocation();
-  const from =
+  // Restore the previous search URL when returning from apartment details.
+  const backUrl =
     typeof location.state?.from === "string" &&
     location.state.from.startsWith("?")
-      ? location.state.from
-      : "";
+      ? `/${location.state.from}`
+      : "/";
 
   useEffect(() => {
     async function loadListing() {
       setLoading(true);
       setError(null);
+      setListing(null);
 
       try {
         const response = await fetch(`/api/listings/${id}`);
@@ -55,49 +57,79 @@ export default function ListingDetails() {
   }
 
   return (
-    <main>
-      <h1>Apartment in {listing.city}</h1>
+    <main className="container py-5">
+      <Link to={backUrl} className="btn btn-outline-secondary mb-4">
+        ← Back to listings
+      </Link>
 
-      <p>
-        {listing.street ?? "Street unavailable"}
-        {listing.building_number
-          ? ` ${listing.building_number}`
-          : ""}
-        {listing.postal_code
-          ? `, ${listing.postal_code}`
-          : ""}
-      </p>
+      <div className="card border-0 shadow-sm">
+        <div className="card-body p-4 p-md-5">
+          <span className="badge text-bg-light mb-3">Apartment</span>
 
-      <h2>Pricing</h2>
+          <h1 className="fw-bold mb-2">
+            Apartment in {listing.city ?? "Unknown location"}
+          </h1>
 
-      <p>
-        Total price:{" "}
-        {Number(listing.price_total).toLocaleString("pl-PL")} zł
-      </p>
+          <p className="text-muted mb-4">
+            {listing.street ?? "Street unavailable"}
+            {listing.building_number ? ` ${listing.building_number}` : ""}
+            {listing.postal_code ? `, ${listing.postal_code}` : ""}
+          </p>
 
-      <p>Area: {listing.area_m2} m²</p>
+          <div className="row g-4 mb-4">
+            <div className="col-md-4">
+              <div className="bg-light rounded p-3 h-100">
+                <div className="text-muted small mb-1">Total price</div>
+                <div className="fs-4 fw-bold text-primary">
+                  {listing.price_total
+                    ? `${Number(listing.price_total).toLocaleString("pl-PL")} zł`
+                    : "Not available"}
+                </div>
+              </div>
+            </div>
 
-      <p>
-        Price per m²:{" "}
-        {Number(listing.price_per_m2).toLocaleString("pl-PL")} zł
-      </p>
+            <div className="col-md-4">
+              <div className="bg-light rounded p-3 h-100">
+                <div className="text-muted small mb-1">Area</div>
+                <div className="fs-4 fw-bold">{listing.area_m2 ?? "—"} m²</div>
+              </div>
+            </div>
 
-      <h2>Property information</h2>
+            <div className="col-md-4">
+              <div className="bg-light rounded p-3 h-100">
+                <div className="text-muted small mb-1">Price per m²</div>
+                <div className="fs-4 fw-bold">
+                  {listing.price_per_m2
+                    ? `${Number(listing.price_per_m2).toLocaleString("pl-PL")} zł`
+                    : "Not available"}
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <dl>
-        <dt>City</dt>
-        <dd>{listing.city ?? "Not specified"}</dd>
+          <h2 className="h5 fw-bold mb-3">Property information</h2>
 
-        <dt>Region</dt>
-        <dd>{listing.voivodeship ?? "Not specified"}</dd>
+          <dl className="row mb-0">
+            <dt className="col-sm-4">City</dt>
+            <dd className="col-sm-8">{listing.city ?? "Not specified"}</dd>
 
-        <dt>Postal code</dt>
-        <dd>{listing.postal_code ?? "Not specified"}</dd>
+            <dt className="col-sm-4">Region</dt>
+            <dd className="col-sm-8">
+              {listing.voivodeship ?? "Not specified"}
+            </dd>
 
-        <dt>Apartment identifier</dt>
-        <dd>{listing.source_unit_identifier ?? "Not specified"}</dd>
-      </dl>
-      <Link to={`/${from}`}>Back to listings</Link>
+            <dt className="col-sm-4">Postal code</dt>
+            <dd className="col-sm-8">
+              {listing.postal_code ?? "Not specified"}
+            </dd>
+
+            <dt className="col-sm-4">Apartment identifier</dt>
+            <dd className="col-sm-8">
+              {listing.source_unit_identifier ?? "Not specified"}
+            </dd>
+          </dl>
+        </div>
+      </div>
     </main>
   );
 }
