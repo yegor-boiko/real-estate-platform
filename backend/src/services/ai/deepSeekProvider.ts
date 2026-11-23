@@ -1,7 +1,7 @@
 
 import OpenAI from "openai";
-import { aiSearchResultSchema } from "./aiSearchSchema.js";
-import type { AiSearchResult } from "./aiSearchSchema.js";
+import { aiSearchResultSchema } from "../../schemas/aiSearchSchema.js";
+import type { AiSearchResult } from "../../schemas/aiSearchSchema.js";
 import type { LlmProvider } from "./llmProvider.js";
 
 export class DeepSeekProvider implements LlmProvider {

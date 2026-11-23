@@ -1,5 +1,5 @@
 
-import type { AiSearchResult } from "./aiSearchSchema.js";
+import type { AiSearchResult } from "../../schemas/aiSearchSchema.js";
 import type { LlmProvider } from "./llmProvider.js";
 import { DeepSeekProvider } from "./deepSeekProvider.js";
 import { GeminiProvider } from "./geminiProvider.js";
