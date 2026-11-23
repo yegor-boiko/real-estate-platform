@@ -207,4 +207,4 @@ The project uses a publicly available developer dataset rather than scraping a r
 
 ## Engineering Decisions
 
-For details on data processing, architectural decisions, AI search assumptions, limitations, and future improvements, see [Engineering Reasoning](./Engineering%20Reasoning.docx).
+For details on data processing, architectural decisions, AI search assumptions, limitations, and future improvements, see Engineering Reasoning (email).
