@@ -1,4 +1,4 @@
-# Smart Real Estate Listings Platform
+# Real Estate Listings Platform
 
 A full-stack application for exploring real apartment listings in Poland. Users can search using traditional filters or natural-language queries interpreted by AI.
 
