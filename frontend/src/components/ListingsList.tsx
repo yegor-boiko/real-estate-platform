@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import type { Listing, ListingsResponse } from "../types/listing";
 import ListingFiltersForm from "./ListingFiltersForm";
 import type { SearchFilters } from "./ListingFiltersForm";
+import AiSearch from "./AiSearch";
 
 export default function ListingsList() {
   const [listings, setListings] = useState<Listing[]>([]);
@@ -118,6 +119,8 @@ export default function ListingsList() {
           Explore apartment listings from ATAL across Poland.
         </p>
       </header>
+
+      <AiSearch />
 
       <div className="row g-3">
         <aside className="col-12 col-lg-3">
