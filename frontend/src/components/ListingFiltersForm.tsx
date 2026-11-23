@@ -6,12 +6,7 @@ export interface SearchFilters {
   maxPrice: string;
   minArea: string;
   maxArea: string;
-}
-
-interface Props {
-  initialFilters: SearchFilters;
-  onSearch: (filters: SearchFilters) => void;
-  onReset: () => void;
+  sortBy: string;
 }
 
 interface Props {
@@ -43,6 +38,7 @@ export default function ListingFiltersForm({
         maxPrice: "",
         minArea: "",
         maxArea: "",
+        sortBy: "default",
     });
 
     onReset();
@@ -80,6 +76,18 @@ export default function ListingFiltersForm({
           />
         </label>
       ))}
+
+      <label>
+        Sort by
+        <select
+          value={filters.sortBy}
+          onChange={(event) => updateFilter("sortBy", event.target.value)}
+        >
+          <option value="default">Default</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+        </select>
+      </label>
 
       <button type="submit">Search</button>
       <button type="button" onClick={handleReset}>

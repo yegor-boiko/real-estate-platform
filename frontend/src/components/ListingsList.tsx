@@ -23,6 +23,7 @@ export default function ListingsList() {
     maxPrice: searchParams.get("maxPrice") ?? "",
     minArea: searchParams.get("minArea") ?? "",
     maxArea: searchParams.get("maxArea") ?? "",
+    sortBy: searchParams.get("sortBy") ?? "default",
   };
 
 
@@ -51,6 +52,7 @@ export default function ListingsList() {
           "maxPrice",
           "minArea",
           "maxArea",
+          "sortBy",
         ]) {
           const value = urlParams.get(key)?.trim();
 
