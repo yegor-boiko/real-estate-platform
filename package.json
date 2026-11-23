@@ -1,11 +1,11 @@
 {
   "name": "real-estate-platform-docplanner",
   "version": "1.0.0",
-  "description": "",
+  "description": "Real estate listings platform with natural-language AI search",
   "private": true,
   "workspaces": ["backend", "frontend"],
   "keywords": [],
-  "author": "",
+  "author": "Yehor Boiko",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

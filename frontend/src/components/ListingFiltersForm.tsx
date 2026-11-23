@@ -152,7 +152,7 @@ export default function ListingFiltersForm({
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm"
-              onClick={onReset}
+              onClick={handleReset}
             >
               Reset
             </button>
