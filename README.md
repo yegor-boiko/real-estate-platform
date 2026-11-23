@@ -198,7 +198,7 @@ GitHub Actions automatically runs formatting checks, frontend linting, builds, a
 ## Dataset
 
 - **Provider:** ATAL S.A.
-- **Source:** [Polish Open Data Portal](https://dane.gov.pl/)
+- **Source:** [Polish Open Data Portal](https://dane.gov.pl/pl/dataset/9884/resource/3015190/table)
 - **Snapshot:** November 19, 2026
 - **License:** CC0 1.0
 - **Imported records:** 5,793 residential apartments
