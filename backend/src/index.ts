@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  getListings,
-  getListingById,
-} from "./repositories/listingRepository.js";
+import { getListings, getListingById } from "./repositories/listingRepository.js";
 import { listingSearchSchema } from "./schemas/listingSearchSchema.js";
 import aiSearchRoutes from "./routes/aiSearchRoutes.js";
 
@@ -22,11 +19,7 @@ app.get("/api/listings", async (req, res) => {
   const { page, limit, ...filters } = parsed.data;
 
   try {
-    const { listings, totalFilteredRows, totalRows } = await getListings(
-      page,
-      limit,
-      filters,
-    );
+    const { listings, totalFilteredRows, totalRows } = await getListings(page, limit, filters);
 
     // Return both matching and overall counts for frontend pagination and context.
     res.json({
@@ -44,7 +37,6 @@ app.get("/api/listings", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch listings" });
   }
 });
-
 
 app.get("/api/listings/:id", async (req, res) => {
   const id = Number(req.params.id);

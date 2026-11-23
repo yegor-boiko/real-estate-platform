@@ -16,11 +16,7 @@ interface Props {
 }
 
 // Keeps form inputs as strings until submitted; the backend validates numeric filters.
-export default function ListingFiltersForm({
-  initialFilters,
-  onSearch,
-  onReset,
-}: Props) {
+export default function ListingFiltersForm({ initialFilters, onSearch, onReset }: Props) {
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
 
   function updateFilter(field: keyof SearchFilters, value: string) {
@@ -34,16 +30,16 @@ export default function ListingFiltersForm({
 
   function handleReset() {
     setFilters({
-        city: "",
-        minPrice: "",
-        maxPrice: "",
-        minArea: "",
-        maxArea: "",
-        sortBy: "default",
+      city: "",
+      minPrice: "",
+      maxPrice: "",
+      minArea: "",
+      maxArea: "",
+      sortBy: "default",
     });
 
     onReset();
-    }
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -142,10 +138,7 @@ export default function ListingFiltersForm({
 
         <div className="col-12">
           <div className="d-flex gap-2">
-            <button
-              type="submit"
-              className="btn btn-primary btn-sm flex-grow-1"
-            >
+            <button type="submit" className="btn btn-primary btn-sm flex-grow-1">
               Search
             </button>
 

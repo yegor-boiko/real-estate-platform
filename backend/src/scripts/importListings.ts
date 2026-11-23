@@ -1,8 +1,5 @@
 import pool from "../db/connection.js";
-import {
-  downloadListings,
-  readListings,
-} from "../services/importer/listingImporter.js";
+import { downloadListings, readListings } from "../services/importer/listingImporter.js";
 import { saveListings } from "../repositories/listingRepository.js";
 
 // CLI entry point: downloads, normalizes, validates, and saves the dataset.

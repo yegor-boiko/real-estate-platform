@@ -21,16 +21,8 @@ export function normalizeDecimal(value: unknown): number | null {
 
 // The source dataset has no explicit apartment area.
 // Derive it from total price / price per m², rounded to two decimals.
-export function calculateArea(
-  totalPrice: number | null,
-  pricePerM2: number | null,
-): number | null {
-  if (
-    totalPrice === null ||
-    pricePerM2 === null ||
-    totalPrice <= 0 ||
-    pricePerM2 <= 0
-  ) {
+export function calculateArea(totalPrice: number | null, pricePerM2: number | null): number | null {
+  if (totalPrice === null || pricePerM2 === null || totalPrice <= 0 || pricePerM2 <= 0) {
     return null;
   }
 

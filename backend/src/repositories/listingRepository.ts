@@ -75,10 +75,10 @@ export async function saveListings(listings: Listing[]): Promise<void> {
 // Build a paginated listing query using optional, validated filters.
 // SQL values are parameterized; only predefined column expressions are used.
 export async function getListings(
-    page: number = 1,
-    limit: number = 10,
-    filters: ListingFilters = {},
-): Promise<{ listings: RowDataPacket[], totalFilteredRows: number, totalRows: number }> {
+  page: number = 1,
+  limit: number = 10,
+  filters: ListingFilters = {},
+): Promise<{ listings: RowDataPacket[]; totalFilteredRows: number; totalRows: number }> {
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
@@ -108,8 +108,7 @@ export async function getListings(
   }
 
   // Reuse the same conditions for both listing retrieval and filtered counts.
-  const whereClause =
-    conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
   // Whitelist SQL sorting expressions instead of interpolating user input.
   const orderBy =
@@ -133,9 +132,7 @@ export async function getListings(
     params,
   );
 
-  const [allCount] = await pool.query<RowDataPacket[]>(
-    "SELECT COUNT(*) AS total FROM listings",
-  );
+  const [allCount] = await pool.query<RowDataPacket[]>("SELECT COUNT(*) AS total FROM listings");
 
   return {
     listings,
@@ -145,13 +142,8 @@ export async function getListings(
 }
 
 // Fetch a single listing by its database-generated ID.
-export async function getListingById(
-  id: number,
-): Promise<RowDataPacket | null> {
-  const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM listings WHERE id = ?",
-    [id],
-  );
+export async function getListingById(id: number): Promise<RowDataPacket | null> {
+  const [rows] = await pool.query<RowDataPacket[]>("SELECT * FROM listings WHERE id = ?", [id]);
 
   return rows[0] ?? null;
 }

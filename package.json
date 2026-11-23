@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "description": "Real estate listings platform with natural-language AI search",
   "private": true,
-  "workspaces": ["backend", "frontend"],
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "keywords": [],
   "author": "Yehor Boiko",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "prettier": "^3.10.1",
     "typescript": "~6.0.3"
   }
 }

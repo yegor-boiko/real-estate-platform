@@ -2,18 +2,16 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import type { Listing } from "../types/listing";
 
-
 export default function ListingDetails() {
   const { id } = useParams();
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const location = useLocation();
   // Restore the previous search URL when returning from apartment details.
   const backUrl =
-    typeof location.state?.from === "string" &&
-    location.state.from.startsWith("?")
+    typeof location.state?.from === "string" && location.state.from.startsWith("?")
       ? `/${location.state.from}`
       : "/";
 
@@ -33,9 +31,7 @@ export default function ListingDetails() {
         const result: { data: Listing } = await response.json();
         setListing(result.data);
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "Unknown error",
-        );
+        setError(error instanceof Error ? error.message : "Unknown error");
       } finally {
         setLoading(false);
       }
@@ -66,9 +62,7 @@ export default function ListingDetails() {
         <div className="card-body p-4 p-md-5">
           <span className="badge text-bg-light mb-3">Apartment</span>
 
-          <h1 className="fw-bold mb-2">
-            Apartment in {listing.city ?? "Unknown location"}
-          </h1>
+          <h1 className="fw-bold mb-2">Apartment in {listing.city ?? "Unknown location"}</h1>
 
           <p className="text-muted mb-4">
             {listing.street ?? "Street unavailable"}
@@ -114,19 +108,13 @@ export default function ListingDetails() {
             <dd className="col-sm-8">{listing.city ?? "Not specified"}</dd>
 
             <dt className="col-sm-4">Region</dt>
-            <dd className="col-sm-8">
-              {listing.voivodeship ?? "Not specified"}
-            </dd>
+            <dd className="col-sm-8">{listing.voivodeship ?? "Not specified"}</dd>
 
             <dt className="col-sm-4">Postal code</dt>
-            <dd className="col-sm-8">
-              {listing.postal_code ?? "Not specified"}
-            </dd>
+            <dd className="col-sm-8">{listing.postal_code ?? "Not specified"}</dd>
 
             <dt className="col-sm-4">Apartment identifier</dt>
-            <dd className="col-sm-8">
-              {listing.source_unit_identifier ?? "Not specified"}
-            </dd>
+            <dd className="col-sm-8">{listing.source_unit_identifier ?? "Not specified"}</dd>
           </dl>
         </div>
       </div>

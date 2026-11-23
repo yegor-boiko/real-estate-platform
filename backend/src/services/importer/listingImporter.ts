@@ -1,13 +1,10 @@
 import { readSheet } from "read-excel-file/node";
 import type { Listing } from "../../types/listing.js";
-import {
-  normalizeText,
-  normalizeDecimal,
-  calculateArea,
-} from "./listingNormalizer.js";
+import { normalizeText, normalizeDecimal, calculateArea } from "./listingNormalizer.js";
 import { validateListing } from "./listingValidator.js";
 
-const ATAL_FILE_URL = "https://api.dane.gov.pl/resources/3015190,ceny-ofertowe-mieszkan-dewelopera-atal-spoka-akcyjna-2026-11-19/file";
+const ATAL_FILE_URL =
+  "https://api.dane.gov.pl/resources/3015190,ceny-ofertowe-mieszkan-dewelopera-atal-spoka-akcyjna-2026-11-19/file";
 
 // Map columns by header name rather than position, so column reordering
 // in the source spreadsheet does not break the importer.
@@ -22,8 +19,7 @@ function getColumnIndexes(headers: unknown[]) {
     return index;
   }
 
-  const locationSuffix =
-    "lokalizacji przedsięwzięcia deweloperskiego lub zadania inwestycyjnego";
+  const locationSuffix = "lokalizacji przedsięwzięcia deweloperskiego lub zadania inwestycyjnego";
 
   return {
     voivodeship: columnIndex(`Województwo ${locationSuffix}`),
@@ -59,10 +55,7 @@ function getColumnIndexes(headers: unknown[]) {
 }
 
 // Convert raw Excel values into a normalized Listing before validation.
-function mapRowToListing(
-  row: unknown[],
-  columns: ReturnType<typeof getColumnIndexes>,
-): Listing {
+function mapRowToListing(row: unknown[], columns: ReturnType<typeof getColumnIndexes>): Listing {
   const pricePerM2 = normalizeDecimal(row[columns.pricePerM2]);
   const priceTotal = normalizeDecimal(row[columns.priceTotal]);
 

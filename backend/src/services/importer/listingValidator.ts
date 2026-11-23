@@ -25,17 +25,11 @@ export function validateListing(listing: Listing): string[] {
     errors.push("Invalid area");
   }
 
-  if (
-    listing.latitude !== null &&
-    (listing.latitude < -90 || listing.latitude > 90)
-  ) {
+  if (listing.latitude !== null && (listing.latitude < -90 || listing.latitude > 90)) {
     errors.push("Invalid latitude");
   }
 
-  if (
-    listing.longitude !== null &&
-    (listing.longitude < -180 || listing.longitude > 180)
-  ) {
+  if (listing.longitude !== null && (listing.longitude < -180 || listing.longitude > 180)) {
     errors.push("Invalid longitude");
   }
 

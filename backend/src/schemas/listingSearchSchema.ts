@@ -26,21 +26,14 @@ export const listingSearchSchema = z
   })
   .refine(
     (data) =>
-      data.minPrice === undefined ||
-      data.maxPrice === undefined ||
-      data.minPrice <= data.maxPrice,
+      data.minPrice === undefined || data.maxPrice === undefined || data.minPrice <= data.maxPrice,
     { message: "Invalid price range" },
   )
   .refine(
     (data) =>
-      data.minArea === undefined ||
-      data.maxArea === undefined ||
-      data.minArea <= data.maxArea,
+      data.minArea === undefined || data.maxArea === undefined || data.minArea <= data.maxArea,
     { message: "Invalid area range" },
   );
 
 // Derive repository filter types from the schema to avoid duplicate definitions.
-export type ListingFilters = Omit<
-  z.infer<typeof listingSearchSchema>,
-  "page" | "limit"
->;
+export type ListingFilters = Omit<z.infer<typeof listingSearchSchema>, "page" | "limit">;

@@ -4,15 +4,11 @@ export default function Footer() {
       <div className="container">
         <p className="small text-muted mb-2">
           <strong>Data source:</strong> ATAL Spółka Akcyjna, published via{" "}
-          <a
-            href="https://dane.gov.pl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://dane.gov.pl" target="_blank" rel="noopener noreferrer">
             dane.gov.pl
           </a>
-          . Apartment offering prices as of 19 November 2026, disclosed under
-          Article 19b of Polish developer legislation.
+          . Apartment offering prices as of 19 November 2026, disclosed under Article 19b of Polish
+          developer legislation.
         </p>
 
         <p className="small text-muted mb-0">

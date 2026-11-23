@@ -1,4 +1,3 @@
-
 import OpenAI from "openai";
 import { aiSearchResultSchema } from "../../schemas/aiSearchSchema.js";
 import type { AiSearchResult } from "../../schemas/aiSearchSchema.js";

@@ -59,22 +59,13 @@ test("fails when all providers fail", async () => {
     },
   };
 
-  const service = new AiSearchService([
-    failingProvider,
-    failingProvider,
-  ]);
+  const service = new AiSearchService([failingProvider, failingProvider]);
 
-  await assert.rejects(
-    service.interpretSearch("Cheap flat in Kraków"),
-    /All AI providers failed/,
-  );
+  await assert.rejects(service.interpretSearch("Cheap flat in Kraków"), /All AI providers failed/);
 });
 
 test("fails when no providers are configured", async () => {
   const service = new AiSearchService([]);
 
-  await assert.rejects(
-    service.interpretSearch("Cheap flat in Kraków"),
-    /All AI providers failed/,
-  );
+  await assert.rejects(service.interpretSearch("Cheap flat in Kraków"), /All AI providers failed/);
 });

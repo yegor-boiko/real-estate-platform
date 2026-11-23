@@ -40,23 +40,14 @@ export default function ListingsList() {
 
         const currentPageParam = Number(urlParams.get("page") ?? 1);
         const currentPage =
-          Number.isSafeInteger(currentPageParam) && currentPageParam > 0
-            ? currentPageParam
-            : 1;
+          Number.isSafeInteger(currentPageParam) && currentPageParam > 0 ? currentPageParam : 1;
 
         const params = new URLSearchParams({
           page: String(currentPage),
           limit: "6",
         });
 
-        for (const key of [
-          "city",
-          "minPrice",
-          "maxPrice",
-          "minArea",
-          "maxArea",
-          "sortBy",
-        ]) {
+        for (const key of ["city", "minPrice", "maxPrice", "minArea", "maxArea", "sortBy"]) {
           const value = urlParams.get(key)?.trim();
 
           if (value) {
@@ -77,9 +68,7 @@ export default function ListingsList() {
         setTotalRows(result.pagination.totalRows);
         setTotalFilteredRows(result.pagination.totalFilteredRows);
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "Unknown error",
-        );
+        setError(error instanceof Error ? error.message : "Unknown error");
       } finally {
         setLoading(false);
       }
@@ -115,9 +104,7 @@ export default function ListingsList() {
     <main className="container px-4 py-4">
       <header className="mb-4">
         <h1 className="h3 fw-bold mb-1">Find your next home</h1>
-        <p className="text-muted small">
-          Explore apartment listings from ATAL across Poland.
-        </p>
+        <p className="text-muted small">Explore apartment listings from ATAL across Poland.</p>
       </header>
 
       <AiSearch />
@@ -141,47 +128,34 @@ export default function ListingsList() {
           {loading ? (
             <p>Loading apartments...</p>
           ) : error ? (
-            <div className="alert alert-danger">
-              Failed to load listings: {error}
-            </div>
+            <div className="alert alert-danger">Failed to load listings: {error}</div>
           ) : (
             <>
               <div className="d-flex align-items-center mb-3">
                 <div>
                   <h2 className="h5 fw-bold mb-1">Available apartments</h2>
                   <p className="text-muted small mb-0">
-                    {totalFilteredRows.toLocaleString("en-US")} matching records
-                    out of {totalRows.toLocaleString("en-US")}
+                    {totalFilteredRows.toLocaleString("en-US")} matching records out of{" "}
+                    {totalRows.toLocaleString("en-US")}
                   </p>
                 </div>
               </div>
 
               {listings.length === 0 ? (
-                <div className="alert alert-info">
-                  No apartments match your search.
-                </div>
+                <div className="alert alert-info">No apartments match your search.</div>
               ) : (
                 <div className="row g-4">
                   {listings.map((listing) => (
-                    <div
-                      className="col-12 col-md-6 col-xl-4"
-                      key={listing.id}
-                    >
+                    <div className="col-12 col-md-6 col-xl-4" key={listing.id}>
                       <article className="card h-100 shadow-sm border-0 listing-card">
                         <div className="card-body p-3">
-                          <span className="badge text-bg-light mb-3">
-                            Apartment
-                          </span>
+                          <span className="badge text-bg-light mb-3">Apartment</span>
 
-                          <h3 className="h5 fw-bold">
-                            {listing.city ?? "Location unavailable"}
-                          </h3>
+                          <h3 className="h5 fw-bold">{listing.city ?? "Location unavailable"}</h3>
 
                           <p className="text-muted mb-4">
                             {listing.street ?? "Street unavailable"}
-                            {listing.building_number
-                              ? ` ${listing.building_number}`
-                              : ""}
+                            {listing.building_number ? ` ${listing.building_number}` : ""}
                           </p>
 
                           <div className="d-flex justify-content-between mb-3">
@@ -192,10 +166,7 @@ export default function ListingsList() {
                           <div className="d-flex justify-content-between mb-4">
                             <span className="text-muted">Price</span>
                             <strong>
-                              {Number(listing.price_total).toLocaleString(
-                                "pl-PL",
-                              )}{" "}
-                              zł
+                              {Number(listing.price_total).toLocaleString("pl-PL")} zł
                             </strong>
                           </div>
 
