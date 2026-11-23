@@ -4,6 +4,7 @@ import {
   getListingById,
 } from "./repositories/listingRepository.js";
 import { listingSearchSchema } from "./schemas/listingSearchSchema.js";
+import aiSearchRoutes from "./routes/aiSearchRoutes.js";
 
 const app = express();
 
@@ -68,5 +69,7 @@ app.get("/api/listings/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch listing" });
   }
 });
+
+app.use("/api/ai", aiSearchRoutes);
 
 app.listen(3000);
