@@ -47,71 +47,117 @@ export default function ListingFiltersForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label className="form-label" htmlFor="city">
-          City
-        </label>
-        <input
-          id="city"
-          className="form-control form-control-sm"
-          type="text"
-          placeholder="e.g. Kraków"
-          value={filters.city}
-          onChange={(event) => updateFilter("city", event.target.value)}
-        />
-      </div>
-
-      {(
-        [
-          ["minPrice", "Minimum price (PLN)"],
-          ["maxPrice", "Maximum price (PLN)"],
-          ["minArea", "Minimum area (m²)"],
-          ["maxArea", "Maximum area (m²)"],
-        ] as const
-      ).map(([field, label]) => (
-        <div className="mb-3" key={field}>
-          <label className="form-label" htmlFor={field}>
-            {label}
+      <div className="row g-2 align-items-end">
+        <div className="col-12">
+          <label htmlFor="city" className="form-label">
+            City
           </label>
           <input
-            id={field}
+            id="city"
             className="form-control form-control-sm"
-            type="number"
-            min="0"
-            step="any"
-            value={filters[field]}
-            onChange={(event) => updateFilter(field, event.target.value)}
+            placeholder="e.g. Kraków"
+            value={filters.city}
+            onChange={(event) => updateFilter("city", event.target.value)}
           />
         </div>
-      ))}
 
-      <div className="mb-4">
-        <label className="form-label" htmlFor="sortBy">
-          Sort by
-        </label>
-        <select
-          id="sortBy"
-          className="form-select form-select-sm"
-          value={filters.sortBy}
-          onChange={(event) => updateFilter("sortBy", event.target.value)}
-        >
-          <option value="default">Default</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-        </select>
-      </div>
+        <div className="col-12">
+          <label htmlFor="minPrice" className="form-label">
+            Minimum price (PLN)
+          </label>
+          <input
+            id="minPrice"
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            placeholder="e.g. 300000"
+            value={filters.minPrice}
+            onChange={(event) => updateFilter("minPrice", event.target.value)}
+          />
+        </div>
 
-      <div className="d-grid gap-2">
-        <button className="btn btn-primary" type="submit">
-          Search
-        </button>
-        <button
-          className="btn btn-outline-secondary"
-          type="button"
-          onClick={handleReset}
-        >
-          Reset
-        </button>
+        <div className="col-12">
+          <label htmlFor="maxPrice" className="form-label">
+            Maximum price (PLN)
+          </label>
+          <input
+            id="maxPrice"
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            placeholder="e.g. 800000"
+            value={filters.maxPrice}
+            onChange={(event) => updateFilter("maxPrice", event.target.value)}
+          />
+        </div>
+
+        <div className="col-12">
+          <label htmlFor="minArea" className="form-label">
+            Minimum area (m²)
+          </label>
+          <input
+            id="minArea"
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            step="any"
+            placeholder="e.g. 40"
+            value={filters.minArea}
+            onChange={(event) => updateFilter("minArea", event.target.value)}
+          />
+        </div>
+
+        <div className="col-12">
+          <label htmlFor="maxArea" className="form-label">
+            Maximum area (m²)
+          </label>
+          <input
+            id="maxArea"
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            step="any"
+            placeholder="e.g. 80"
+            value={filters.maxArea}
+            onChange={(event) => updateFilter("maxArea", event.target.value)}
+          />
+        </div>
+
+        <div className="col-12">
+          <label htmlFor="sortBy" className="form-label">
+            Sort by
+          </label>
+
+          <select
+            id="sortBy"
+            className="form-select form-select-sm"
+            value={filters.sortBy}
+            onChange={(event) => updateFilter("sortBy", event.target.value)}
+          >
+            <option value="default">Default order</option>
+            <option value="price_asc">Price: low to high</option>
+            <option value="price_desc">Price: high to low</option>
+          </select>
+        </div>
+
+        <div className="col-12">
+          <div className="d-flex gap-2">
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm flex-grow-1"
+            >
+              Search
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              onClick={onReset}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   );
